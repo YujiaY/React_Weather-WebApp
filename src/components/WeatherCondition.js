@@ -5,10 +5,14 @@ import umberella from '../assets/icons/icon-umberella.png';
 import wind from '../assets/icons/icon-wind.png';
 
 function WeatherCondition(props) {
-	return (
+  const max = props.unit === 'C' ? props.current.maxCelsius: props.current.maxFahrenheit;
+  const unit = props.unit === 'C' ? 'C' : 'F';
+  return (
 		<section className="weather-condition">
 			<div className="weather-condition__location">{props.cityName}</div>
-			<div className="weather-condition__temp">{props.current.maxCelsius}</div>
+			<div className="weather-condition__temp">
+        {max} {unit}
+      </div>
 			<div className="weather-condition__desc">
 				<div>
 					<img src={umberella} />

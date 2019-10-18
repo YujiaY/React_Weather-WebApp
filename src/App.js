@@ -5,8 +5,7 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Navigation from './components/Navigation';
 
-import axios from 'axios';
-import {format} from 'date-fns';
+import {fetchWeatherData} from './utils/axios';
 import './App.css';
 
 class App extends React.Component {
@@ -14,6 +13,8 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      unit: 'C',
+      input: '',
       forecasts: [],
       itemLimit: 10,
       cityName: '',
@@ -22,52 +23,69 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios('https://jr-weather-api.herokuapp.com/api/weather?cc=au&city=brisbane')
-      .then(res => {
-        console.log(res)
-        const forecasts = res.data.data.forecast.slice(0, 10).map(i => {
-          const date = new Date(i.time * 1000);
-          const day = format(date, 'EEE');
-          const time = format(date, 'HH:mm');
+    fetchWeatherData(this.state.cityName)
+      .then(this.updateWeather);
+  }
 
-          return  ({
-            day,
-            high: i.maxCelsius,
-            low: i.minCelsius,
-            time
-          })
-        });
-        const cityName = res.data.data.city.name;
-        const current = {
-          windSpeed: res.data.data.current.windSpeed,
-          windDirection: res.data.data.current.windDirection,
-          maxCelsius: res.data.data.current.maxCelsius,
-          humidity: res.data.data.current.humidity,
-        }
-        this.setState({
-          forecasts,
-          cityName,
-          current
-        })
-      })
-      .catch(err => console.log(err))
+  componentDidUpdate(prevProps, prevState, snapshot) {
+  }
+
+  toggleUnit = () => {
+    this.setState(state => ({unit: state.unit === 'C' ? 'F' : 'C'}))
   }
 
   changeLimit = limit => {
     this.setState({itemLimit : limit});
   }
 
+  handleInputChange = e => {
+    this.setState({input: e.target.value});
+  };
+
+  handleInputSubmit = () => {
+    console.log(this.state.input);
+    fetchWeatherData(this.state.input)
+      .then(this.updateWeather)
+      .catch(err => {
+        console.log(JSON.stringify(err))
+
+        if (err.response.data.message === "city not found") {
+          this.setState({input: 'City Not Found in AU.'})
+        }
+      });
+  };
+
+  updateWeather = res => {
+    console.log(res)
+      const data = res.data.data;
+      const forecasts = data.forecast.slice(0, 10);
+      const current =data.current;
+      const cityName = data.city.name;
+      this.setState({
+        forecasts,
+        cityName,
+        current
+      })
+  }
+
   render() {
     return (
       <div className="weather-channel__container">
         <Header />
-        <Navigation />
+        <Navigation
+          inputValue = {this.state.input}
+          handleInputChange = {this.handleInputChange}
+          handleInputSubmit = {this.handleInputSubmit}
+          toggleUnit = {this.toggleUnit}
+          unit = {this.state.unit}
+        />
         <Main
           forecasts = {this.state.forecasts.slice(0, this.state.itemLimit)}
           changeLimit = {this.changeLimit}
           itemLimit = {this.state.itemLimit}
           cityName = {this.state.cityName}
           current = {this.state.current}
+          unit = {this.state.unit}
         />
         <Footer />
       </div>

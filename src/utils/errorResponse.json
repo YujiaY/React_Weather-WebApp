@@ -1,0 +1,43 @@
+{
+  "config": {
+    "transformRequest": {},
+    "transformResponse": {},
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "headers": {
+      "Accept": "application/json, text/plain, */*"
+    },
+    "method": "get",
+    "url": "https://jr-weather-api.herokuapp.com/api/weather?cc=au&city=adsfasdfasf"
+  },
+  "request": {},
+  "response": {
+    "data": {
+      "status": "error",
+      "message": "city not found",
+      "data": null
+    },
+    "status": 404,
+    "statusText": "Not Found",
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "57"
+    },
+    "config": {
+      "transformRequest": {},
+      "transformResponse": {},
+      "timeout": 0,
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+      "maxContentLength": -1,
+      "headers": {
+        "Accept": "application/json, text/plain, */*"
+      },
+      "method": "get",
+      "url": "https://jr-weather-api.herokuapp.com/api/weather?cc=au&city=adsfasdfasf"
+    },
+    "request": {}
+  }
+}

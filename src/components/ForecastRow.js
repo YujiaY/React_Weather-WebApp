@@ -8,8 +8,8 @@ function ForecastRow(props) {
 				<i className="fa fa-clock-o" />
 				  {props.time}
 			</span>
-			<span className="weather-forecast__high">{props.high}</span>
-			<span className="weather-forecast__low">{props.low}</span>
+			<span className="weather-forecast__high">{props.high} C</span>
+			<span className="weather-forecast__low">{props.low} C</span>
 			<span className="weather-forecast__low">{props.test}</span>
 		</div>
 	);
