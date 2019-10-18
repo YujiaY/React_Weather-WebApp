@@ -1,34 +1,51 @@
 import React from 'react';
 
+
 import ForecastRow from './ForecastRow';
 
-function WeatherForecast() {
-	return (
-		<section class="weather-forecast">
-			<div class="forecast__switch">
-				<button class="forecast__switch_0 switch-active">5 items</button>
-				<button class="forecast__switch_1">10 items</button>
-			</div>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="10:00"
-			/>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="13:00"
-			/>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="16:00"
-			/>
-		</section>
-	);
+class WeatherForecast extends React.Component{
+	constructor(props) {
+	  super(props);
+
+	  this.state = {
+    }
+  };
+
+
+
+
+  render() {
+    return (
+      <section className="weather-forecast">
+        <div className="forecast__switch">
+          <button
+            className={`forecast__switch_0 ${this.props.itemLimit === 5 ? 'switch-active' : ''}`}
+            onClick={() => this.props.changeLimit(5)}
+          >
+            5 items
+          </button>
+          <button
+            className={`forecast__switch_1 ${this.props.itemLimit === 10 ? 'switch-active' : ''}`}
+            onClick={() => this.props.changeLimit(10)}
+          >
+            10 items
+          </button>
+        </div>
+        {
+          this.props.forecasts.map( i => (
+            <ForecastRow
+              key = {this.props.forecasts.indexOf(i)}
+              day = {i.day}
+              high = {i.high}
+              low = { i.low}
+              time = {i.time}
+              test = {this.props.forecasts.indexOf(i)}
+            />
+          ))
+        }
+      </section>
+    );
+  }
 }
 
 export default WeatherForecast;
