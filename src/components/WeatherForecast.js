@@ -41,6 +41,7 @@ class WeatherForecast extends React.Component{
 
             return (
               <ForecastRow
+                unit = {this.props.unit}
                 key = {forecasts.indexOf(i)}
                 day = {day}
                 high = {high}
