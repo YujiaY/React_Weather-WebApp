@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import compass from '../assets/icons/icon-compass.png';
 import umberella from '../assets/icons/icon-umberella.png';
@@ -40,4 +41,9 @@ function WeatherCondition(props) {
 	);
 }
 
-export default WeatherCondition;
+const mapStateToPrps = state => ({
+  cityName: state.weatherRdc.cityName,
+  current: state.weatherRdc.current
+})
+
+export default connect(mapStateToPrps)(WeatherCondition);

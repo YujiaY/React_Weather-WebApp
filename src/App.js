@@ -1,11 +1,17 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Main from './components/Main';
 import Navigation from './components/Navigation';
+import Loader from './components/Loader';
+
 
 import {fetchWeatherData} from './utils/axios';
+import {fetchDataThunkAction} from './redux/weatherActions';
+
+
 import './App.css';
 
 class App extends React.Component {
@@ -15,16 +21,16 @@ class App extends React.Component {
     this.state = {
       unit: 'C',
       input: '',
+      current: {},
       forecasts: [],
-      itemLimit: 10,
-      cityName: '',
-      current: {}
+      cityName: ''
     }
   }
 
   componentDidMount() {
-    fetchWeatherData(this.state.cityName)
-      .then(this.updateWeather);
+    // fetchWeatherData(this.state.cityName)
+    //   .then(this.updateWeather);
+    this.props.getWeatherData('Brisbane')
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -47,8 +53,7 @@ class App extends React.Component {
     fetchWeatherData(this.state.input)
       .then(this.updateWeather)
       .catch(err => {
-        console.log(JSON.stringify(err))
-
+        // console.log(JSON.stringify(err))
         if (err.response.data.message === "city not found") {
           this.setState({input: 'City Not Found in AU.'})
         }
@@ -56,7 +61,6 @@ class App extends React.Component {
   };
 
   updateWeather = res => {
-    console.log(res)
       const data = res.data.data;
       const forecasts = data.forecast.slice(0, 10);
       const current =data.current;
@@ -66,6 +70,17 @@ class App extends React.Component {
         cityName,
         current
       })
+  }
+
+  renderMain() {
+    return <Main
+      // forecasts = {this.state.forecasts.slice(0, this.state.itemLimit)}
+      // changeLimit = {this.changeLimit}
+      // itemLimit = {this.state.itemLimit}
+      // cityName = {this.state.cityName}
+      // current = {this.state.current}
+      unit = {this.state.unit}
+    />
   }
 
   render() {
@@ -79,18 +94,20 @@ class App extends React.Component {
           toggleUnit = {this.toggleUnit}
           unit = {this.state.unit}
         />
-        <Main
-          forecasts = {this.state.forecasts.slice(0, this.state.itemLimit)}
-          changeLimit = {this.changeLimit}
-          itemLimit = {this.state.itemLimit}
-          cityName = {this.state.cityName}
-          current = {this.state.current}
-          unit = {this.state.unit}
-        />
+        {this.props.isLoadingWeather ? <Loader /> : this.renderMain()}
         <Footer />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  hasError: !!state.weatherRdc.error,
+  isLoadingWeather: state.weatherRdc.isLoading
+})
+
+const mapDispatchToProps = dispatch => ({
+  getWeatherData: city => dispatch(fetchDataThunkAction(city)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

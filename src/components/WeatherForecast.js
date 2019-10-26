@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {changeLimitAction} from "../redux/weatherActions"
 
 import {format} from 'date-fns';
 
@@ -13,20 +15,20 @@ class WeatherForecast extends React.Component{
   // };
 
   render() {
-    const {itemLimit} = this.props;
-    const forecasts = this.props.forecasts.slice(0, itemLimit);
+    const {limit, changeLimit, unit } = this.props;
+    const forecasts = this.props.forecasts.slice(0, limit);
     return (
       <section className="weather-forecast">
         <div className="forecast__switch">
           <button
-            className={`forecast__switch_0 ${itemLimit === 5 ? 'switch-active' : ''}`}
-            onClick={() => this.props.changeLimit(5)}
+            className={`forecast__switch_0 ${limit === 5 ? 'switch-active' : ''}`}
+            onClick={() => changeLimit(5)}
           >
             5 items
           </button>
           <button
-            className={`forecast__switch_1 ${itemLimit === 10 ? 'switch-active' : ''}`}
-            onClick={() => this.props.changeLimit(10)}
+            className={`forecast__switch_1 ${limit === 10 ? 'switch-active' : ''}`}
+            onClick={() => changeLimit(10)}
           >
             10 items
           </button>
@@ -36,12 +38,12 @@ class WeatherForecast extends React.Component{
             const date = new Date(i.time * 1000);
             const day = format(date, 'EEE');
             const time = format(date, 'HH:mm');
-            const high = this.props.unit === 'C' ? i.maxCelsius : i.maxFahrenheit
-            const low = this.props.unit === 'C' ? i.minCelsius : i.minFahrenheit
+            const high = unit === 'C' ? i.maxCelsius : i.maxFahrenheit
+            const low = unit === 'C' ? i.minCelsius : i.minFahrenheit
 
             return (
               <ForecastRow
-                unit = {this.props.unit}
+                unit = {unit}
                 key = {forecasts.indexOf(i)}
                 day = {day}
                 high = {high}
@@ -64,4 +66,13 @@ class WeatherForecast extends React.Component{
   }
 }
 
-export default WeatherForecast;
+const mapStateToProps = state => ({
+  limit: state.weatherRdc.limit,
+  forecasts: state.weatherRdc.forecasts
+})
+
+const mapDispatchToProps = dispatch => ({
+  changeLimit: limit => dispatch(changeLimitAction(limit)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeatherForecast);
