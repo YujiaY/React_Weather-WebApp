@@ -6,9 +6,8 @@ const initialState = {
   current: {},
   cityName: '',
   isLoading: false,
-  error: null,
-
-
+  notFoundError: null,
+  otherError: null,
 }
 
 const weatherReducer = (state = initialState, action) => {
@@ -23,6 +22,8 @@ const weatherReducer = (state = initialState, action) => {
       return ({
         ...state,
         isLoading: true,
+        notFoundError: null,
+        otherError: null,
       })
 
     case FETCH_DATA_SUCCESS:
@@ -35,17 +36,26 @@ const weatherReducer = (state = initialState, action) => {
         isLoading: false,
         forecasts,
         current,
-        cityName
+        cityName,
+        notFoundError: null,
+        otherError: null,
       });
 
     case FETCH_DATA_FAILURE:
-      return {
-        ...state,
-        error: action.error,
-        isLoading: false
+      try {
+        if(action.error.response.data.message)
+        return {
+          ...state,
+          notFoundError: action.error,
+          isLoading: false
+        }
+      } catch (e) {
+        return {
+          ...state,
+          otherError: action.error,
+          isLoading: false
+        }
       }
-
-
     default:
       return state;
 

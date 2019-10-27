@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Navigation from './components/Navigation';
 import Loader from './components/Loader';
+import Error from "./components/SearchError";
 
 import {fetchDataThunkAction} from './redux/actions/weatherActions';
 
@@ -19,6 +20,8 @@ class App extends React.Component {
   }
 
   renderMain() {
+    if (this.props.notFoundError) return <Error errorType = 'notFoundError' />
+    if (this.props.otherError) return <Error errorType='otherError' />
     return <Main />
   }
 
@@ -35,7 +38,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  hasError: !!state.weatherRdc.error,
+  notFoundError: !!state.weatherRdc.notFoundError,
+  otherError: !!state.weatherRdc.otherError,
   isLoadingWeather: state.weatherRdc.isLoading
 })
 
