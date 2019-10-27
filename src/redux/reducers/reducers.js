@@ -1,9 +1,11 @@
 import weatherReducer from "./weatherReducer";
+import navigationReducer from "./navigationReducer";
 import {combineReducers} from "redux";
 
 
 const rootReducer = combineReducers({
-  weatherRdc : weatherReducer
+  weatherRdc: weatherReducer,
+  navigationRdc: navigationReducer
 });
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {changeLimitAction} from "../redux/weatherActions"
+import {changeLimitAction} from "../redux/actions/weatherActions"
 
 import {format} from 'date-fns';
 
@@ -68,7 +68,8 @@ class WeatherForecast extends React.Component{
 
 const mapStateToProps = state => ({
   limit: state.weatherRdc.limit,
-  forecasts: state.weatherRdc.forecasts
+  forecasts: state.weatherRdc.forecasts,
+  unit: state.navigationRdc.unit
 })
 
 const mapDispatchToProps = dispatch => ({

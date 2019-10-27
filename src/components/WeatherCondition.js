@@ -43,7 +43,8 @@ function WeatherCondition(props) {
 
 const mapStateToPrps = state => ({
   cityName: state.weatherRdc.cityName,
-  current: state.weatherRdc.current
+  current: state.weatherRdc.current,
+  unit: state.navigationRdc.unit
 })
 
 export default connect(mapStateToPrps)(WeatherCondition);

@@ -1,7 +1,11 @@
 import React from 'react';
+import {connect} from "react-redux";
+
+import {toggleUnit as toggleUnitAction} from '../redux/actions/navigationActions';
 
 function Navigation(props) {
-	return (
+  const {unit, toggleUnit} = props;
+  return (
 		<nav>
 		  	<div>
 				<input
@@ -17,17 +21,25 @@ function Navigation(props) {
 				</button>
 				<button
           className="temp-switch"
-          onClick={props.toggleUnit}
+          onClick={toggleUnit}
         >
 					<i
 						className="fa fa-thermometer-empty temp-switch__icon"
 						aria-hidden="true"
 					/>
-					<sup>&deg;</sup>{props.unit}
+					<sup>&deg;</sup>{unit}
 				</button>
 		  	</div>
 		</nav>
 	);
 }
 
-export default Navigation;
+const mapStateToProps = state => ({
+  unit: state.navigationRdc.unit,
+})
+
+const mapDispatchToProps = dispatch => ({
+  toggleUnit : () => dispatch(toggleUnitAction())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

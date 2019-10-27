@@ -9,7 +9,7 @@ import Loader from './components/Loader';
 
 
 import {fetchWeatherData} from './utils/axios';
-import {fetchDataThunkAction} from './redux/weatherActions';
+import {fetchDataThunkAction} from './redux/actions/weatherActions';
 
 
 import './App.css';
