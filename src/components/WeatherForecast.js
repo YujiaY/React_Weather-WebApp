@@ -7,16 +7,10 @@ import {format} from 'date-fns';
 import ForecastRow from './ForecastRow';
 
 class WeatherForecast extends React.Component{
-	// constructor(props) {
-	//   super(props);
-  //
-	//   this.state = {
-  //   }
-  // };
 
   render() {
-    const {limit, changeLimit, unit } = this.props;
-    const forecasts = this.props.forecasts.slice(0, limit);
+    const {limit, changeLimit, unit, forecasts } = this.props;
+    const forecastsLimited = forecasts.slice(0, limit);
     return (
       <section className="weather-forecast">
         <div className="forecast__switch">
@@ -34,7 +28,7 @@ class WeatherForecast extends React.Component{
           </button>
         </div>
         {
-          forecasts.map( i => {
+          forecastsLimited.map( i => {
             const date = new Date(i.time * 1000);
             const day = format(date, 'EEE');
             const time = format(date, 'HH:mm');
@@ -44,22 +38,14 @@ class WeatherForecast extends React.Component{
             return (
               <ForecastRow
                 unit = {unit}
-                key = {forecasts.indexOf(i)}
+                key = {forecastsLimited.indexOf(i)}
                 day = {day}
                 high = {high}
                 low = {low}
                 time ={time}
-                test = {this.props.forecasts.indexOf(i) + 1}
+                test = {forecastsLimited.indexOf(i) + 1}
               />)
           })
-          // <ForecastRow
-            //   key = {this.props.forecasts.indexOf(i)}
-            //   day = {i.day}
-            //   high = {i.high}
-            //   low = { i.low}
-            //   time = {i.time}
-            //   test = {this.props.forecasts.indexOf(i)}
-            // />
         }
       </section>
     );

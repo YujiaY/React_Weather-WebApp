@@ -1,4 +1,4 @@
-import {TOGGLE_UNIT} from "../actions/navigationActions";
+import {TOGGLE_UNIT, SET_SEARCH_INPUT_VALUE} from "../actions/navigationActions";
 
 const initialState = {
   unit: 'C',
@@ -13,6 +13,12 @@ const navigationReducer = (state = initialState, action) => {
         ...state,
         unit: newUnit
       };
+
+    case SET_SEARCH_INPUT_VALUE:
+      return {
+        ...state,
+        searchString: action.searchString
+      }
 
     default:
       return state;
